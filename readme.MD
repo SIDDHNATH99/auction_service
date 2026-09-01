@@ -1,4 +1,3 @@
-
 # Auction Bidding Service
 
 A small backend service exposing a single `POST /bid` endpoint for an auction platform. Built as a scoped take-home exercise — the focus is on correct bidding logic under concurrency, not auth, rate limiting, or deployment.
@@ -135,11 +134,6 @@ bids (
 **Duplicate / retried requests.** The client sends an `idempotency_key`. If that key has already been processed, the server returns the original stored result instead of reprocessing. A `UNIQUE` constraint on the column is the hard backstop for the case where two identical retries somehow arrive at the same instant.
 
 **Self-bidding.** If the current top bidder submits another bid on the same auction, it's rejected with `already_top_bidder` — they're already winning, so there's nothing for it to accomplish, and it may indicate a client-side bug.
-
-## Known gaps / what I'd change
-
-- No minimum bid increment — a bid of $100.01 over $100 currently counts as "strictly higher." A real system would likely want a configurable minimum step per auction.
-- Idempotency doesn't verify that a reused key is paired with the same request body — a key reused with a different `amount` would silently return the stale original result rather than flagging a conflict.
 
 ## Testing
 
