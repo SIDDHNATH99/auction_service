@@ -6,8 +6,6 @@ const birouter = require('./routes/bid')
 
 app.use(express.json());
 
-app.use('/' , birouter);
-
 app.get('/health', async (req, res) => {
     try {
         await pool.query('SELECT 1');
@@ -19,6 +17,8 @@ app.get('/health', async (req, res) => {
         })
     }
 })
+
+app.use('/' , birouter);
 
 const PORT = 3000 || process.env.PORT;
 app.listen(PORT, () => { `Server is running on ${PORT}` })
