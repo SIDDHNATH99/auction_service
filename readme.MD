@@ -135,6 +135,6 @@ bids (
 
 **Self-bidding.** If the current top bidder submits another bid on the same auction, it's rejected with `already_top_bidder` — they're already winning, so there's nothing for it to accomplish, and it may indicate a client-side bug.
 
-## Testing
+* [ ] Testing
 
 * [ ] Manual scenario testing via curl/Postman, plus a concurrency script at `src/concurrency-test.js` that fires many simultaneous bids at one auction using `Promise.all()` and checks the database lands on the correct final top bid.

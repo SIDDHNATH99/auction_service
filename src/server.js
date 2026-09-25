@@ -13,6 +13,7 @@ app.get('/health', async (req, res) => {
         await pool.query('SELECT 1');
         res.status(200).json({ status: 'ok' })
     } catch (err) {
+        console.log("err" , err);
         res.status(200).json({
             status: 'DB error'
         })

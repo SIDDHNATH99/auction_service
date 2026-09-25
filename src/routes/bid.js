@@ -62,8 +62,15 @@ router.post('/bid', async (req, res) => {
         const now = new Date();
         const closesAt = new Date(auction.closes_at);
 
+        const closesAt2 = new Date(auction.closesAt - 30000);
+
         let status = 'accepted';
         let rejectReason = null;
+
+        if (now >= closesAt2 && now <= closesAt) {
+            closesAt = new Date(closesAt + 30000);
+            let updateClosingtime = await client.query(`UPDATE auctions SET closes_at = $1 where id = $2`, [closesAt, auction_id]);
+        }
 
         if (now >= closesAt) {
             status = 'rejected';
@@ -105,7 +112,7 @@ router.post('/bid', async (req, res) => {
         });
 
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         await client.query('ROLLBACK').catch(() => { });
 
         // Unique violation on idempotency_key = a concurrent retry beat us here
